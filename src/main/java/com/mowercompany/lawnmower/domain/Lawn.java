@@ -26,7 +26,7 @@ public class Lawn {
     }
 
     public void mow() {
-        customThreadPool.submit(() -> mowers.parallelStream().forEach(mower -> mower.mow(this)));
+        customThreadPool.submit(() -> mowers.parallelStream().forEach(mower -> mower.mow(this))).join();
     }
 
     boolean canMowerMoveTo(Mower mower, Position position) {

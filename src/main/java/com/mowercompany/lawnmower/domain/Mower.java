@@ -104,14 +104,6 @@ public class Mower {
         return this.position.getX().equals(anotherMower.position.getX()) && this.position.getY().equals(anotherMower.position.getY());
     }
 
-    public Position getPosition() {
-        return position;
-    }
-
-    public Direction getDirection() {
-        return direction;
-    }
-
     @Override
     public String toString() {
         return position.getX() + " " + position.getY() + " " + direction;

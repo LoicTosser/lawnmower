@@ -23,11 +23,9 @@ class LawnTest implements WithAssertions {
 
         lawn.mow();
 
-        assertThat(mower1.getDirection()).isEqualTo(Direction.N);
-        assertThat(mower1.getPosition()).isEqualTo(new Position(1,3));
+        assertThat(mower1.toString()).isEqualTo("1 3 N");
+        assertThat(mower2.toString()).isEqualTo("5 1 E");
 
-        assertThat(mower2.getDirection()).isEqualTo(Direction.E);
-        assertThat(mower2.getPosition()).isEqualTo(new Position(5,1));
     }
 
 //    void shouldNotMoveWhenAnotherMowerIsAtNextPosition() {
