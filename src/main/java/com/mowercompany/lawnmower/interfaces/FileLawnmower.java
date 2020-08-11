@@ -1,10 +1,15 @@
 package com.mowercompany.lawnmower.interfaces;
 
+import com.mowercompany.lawnmower.application.MowTheLawn;
+import com.mowercompany.lawnmower.domain.Lawn;
+
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class FileLawnmower {
+
+    private final MowTheLawn mowTheLawn = new MowTheLawn();
 
     public void mowLawn(String inputFilePath) {
         if (inputFilePath == null || inputFilePath.isEmpty()) {
@@ -13,7 +18,9 @@ public class FileLawnmower {
             throw new IllegalArgumentException("Input file invalid: " + inputFilePath);
         }
 
-        InputFileParser.parseFileToRequest(new File(inputFilePath));
+        Lawn lawn = InputFileParser.toLawn(new File(inputFilePath));
+
+        mowTheLawn.execute(lawn);
 
         System.out.println("Mow the lawn with input file " + inputFilePath + " as interface");
     }

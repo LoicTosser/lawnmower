@@ -1,28 +1,46 @@
 package com.mowercompany.lawnmower.domain;
 
-import java.util.Objects;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ForkJoinPool;
 
 public class Lawn {
 
-    private final Integer height;
-    private final Integer width;
+    private final Position upperRightCorner;
 
-    public Lawn(Integer height, Integer width) {
-        this.height = height;
-        this.width = width;
+    private final List<Mower> mowers;
+
+    private final ForkJoinPool customThreadPool = new ForkJoinPool(4);
+
+    public Lawn(Position upperRightCorner, List<Mower> mowers) {
+        this.upperRightCorner = upperRightCorner;
+        this.mowers = Collections.synchronizedList(mowers);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Lawn)) return false;
-        Lawn lawn = (Lawn) o;
-        return Objects.equals(height, lawn.height) &&
-                Objects.equals(width, lawn.width);
+    public List<Mower> getMowers() {
+        return mowers;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(height, width);
+    public Position getUpperRightCorner() {
+        return upperRightCorner;
+    }
+
+    public void mow() {
+        customThreadPool.submit(() -> mowers.parallelStream().forEach(mower -> mower.mow(this)));
+    }
+
+    boolean canMowerMoveTo(Mower mower, Position position) {
+        if (!isContained(position)) {
+            return false;
+        }
+
+        return mowers.stream()
+                .filter(aMower -> !aMower.equals(mower))
+                .noneMatch(aMower -> aMower.isAtSamePosition(mower));
+    }
+
+    private boolean isContained(final Position position) {
+        return position.getX() >= 0 && position.getX() <= this.upperRightCorner.getX()
+                && position.getY() >= 0 && position.getY() <= this.upperRightCorner.getY();
     }
 }
