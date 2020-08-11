@@ -1,5 +1,7 @@
 package com.mowercompany.lawnmower;
 
+import com.mowercompany.lawnmower.interfaces.FileLawnmower;
+
 /**
  * Hello world!
  *
@@ -8,6 +10,11 @@ public class LawnmowerApplication
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        if (args.length != 1) {
+            throw new IllegalArgumentException("Only one argument (input file path) is permitted");
+        }
+
+        FileLawnmower fileLawnmower = new FileLawnmower();
+        fileLawnmower.mowLawn(args[0]);
     }
 }
