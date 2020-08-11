@@ -1,0 +1,2 @@
+# lawnmower
+Lawnmower algorithm
