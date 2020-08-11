@@ -1,5 +1,6 @@
 package com.mowercompany.lawnmower.interfaces;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -11,6 +12,9 @@ public class FileLawnmower {
         } else if (!Files.exists(Path.of(inputFilePath))) {
             throw new IllegalArgumentException("Input file invalid: " + inputFilePath);
         }
+
+        InputFileParser.parseFileToRequest(new File(inputFilePath));
+
         System.out.println("Mow the lawn with input file " + inputFilePath + " as interface");
     }
 

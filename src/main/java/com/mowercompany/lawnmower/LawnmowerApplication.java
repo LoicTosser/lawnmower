@@ -2,10 +2,6 @@ package com.mowercompany.lawnmower;
 
 import com.mowercompany.lawnmower.interfaces.FileLawnmower;
 
-/**
- * Hello world!
- *
- */
 public class LawnmowerApplication
 {
     public static void main( String[] args )

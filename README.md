@@ -1,5 +1,5 @@
 # lawnmower
-Algorithm to mow rectangular surfaces.
+Algorithm to mower rectangular surfaces.
 
 ## Build
 
