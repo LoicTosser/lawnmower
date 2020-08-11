@@ -2,10 +2,12 @@ package com.mowercompany.lawnmower.interfaces;
 
 import com.mowercompany.lawnmower.application.MowTheLawn;
 import com.mowercompany.lawnmower.domain.Lawn;
+import com.mowercompany.lawnmower.domain.Mower;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 public class FileLawnmower {
 
@@ -20,9 +22,11 @@ public class FileLawnmower {
 
         Lawn lawn = InputFileParser.toLawn(new File(inputFilePath));
 
-        mowTheLawn.execute(lawn);
+        List<Mower> mowers = mowTheLawn.execute(lawn);
 
-        System.out.println("Mow the lawn with input file " + inputFilePath + " as interface");
+        for (Mower mower : mowers) {
+            System.out.println(mower.toString());
+        }
     }
 
 }

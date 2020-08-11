@@ -114,10 +114,7 @@ public class Mower {
 
     @Override
     public String toString() {
-        return "Mower{" +
-                "position=" + position +
-                ", moves=" + moves +
-                '}';
+        return position.getX() + " " + position.getY() + " " + direction;
     }
 
     @Override
