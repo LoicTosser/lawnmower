@@ -62,3 +62,20 @@ FFRFFRFRRF
 1 3 N
 5 1 E
 ```
+
+## Architecture overview
+### DDD and hexagonal architectures
+Main patterns from DDD and hexagonal architectures were applied in this project:
+* `interfaces` package contains the application entry points.
+** Here only one service is exposed (command line with input file)
+*`application` package contains the services corresponding to the main use cases of the application
+** They are called from `interfaces` services
+** They call domain services
+* `domain` contains all the domain model ans its business rules.
+
+### Multithreading
+The mower controller handles multiple mowers for a given lawn.
+
+To make them "mow the lawn" at the same time, I choose to use parallel stream. By default, parallel streams use common fork/join thread pool.
+
+It can have many side effects (a thread blocked by another task), so I choose to use a custom thread pool. 
