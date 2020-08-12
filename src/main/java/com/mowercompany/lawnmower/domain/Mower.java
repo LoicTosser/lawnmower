@@ -12,29 +12,35 @@ public class Mower {
 
     private Position position;
     private Direction direction;
-    private final Queue<Move> moves;
+
+    private Position nextPosition;
+    private Direction nextDirection;
+
+    private final Queue<MoveType> moveTypes;
 
     private Mower(Position initialPosition,
-                 Direction initialDirection,
-                 Queue<Move> moves) {
+                  Direction initialDirection,
+                  Queue<MoveType> moveTypes) {
         this.position = initialPosition;
         this.direction = initialDirection;
-        this.moves = moves;
+        this.moveTypes = moveTypes;
     }
 
-    public void mow(Lawn lawn) {
-        while(!moves.isEmpty()) {
-            moveAs(lawn, moves.poll());
+    boolean hasNextMove() {
+        return !moveTypes.isEmpty();
+    }
+
+    void prepareNextMove() {
+        if (!hasNextMove()) {
+            return;
         }
-    }
-
-    private void moveAs(Lawn lawn, Move move) {
-        switch (move) {
+        MoveType moveType = moveTypes.poll();
+        if (moveType == null) {
+            throw new IllegalStateException("Next move type can't be null");
+        }
+        switch (moveType) {
             case F:
-                Position nextPosition = moveForward();
-                if (lawn.canMowerMoveTo(this, nextPosition)) {
-                    this.position = nextPosition;
-                }
+                positionForward();
                 break;
             case L:
                 turnLeft();
@@ -47,61 +53,75 @@ public class Mower {
         }
     }
 
+    void confirmMove() {
+        this.direction = nextDirection;
+        this.position = nextPosition;
+        this.nextDirection = null;
+        this.nextPosition = null;
+    }
+
     private void turnRight() {
         switch (this.direction) {
             case E:
-                this.direction = Direction.S;
+                this.nextDirection = Direction.S;
                 break;
             case W:
-                this.direction = Direction.N;
+                this.nextDirection = Direction.N;
                 break;
             case N:
-                this.direction = Direction.E;
+                this.nextDirection = Direction.E;
                 break;
             case S:
-                this.direction = Direction.W;
+                this.nextDirection = Direction.W;
                 break;
             default:
                 throw new IllegalStateException("Invalid Direction");
         }
+        this.nextPosition = this.position;
     }
 
     private void turnLeft() {
         switch (this.direction) {
             case E:
-                this.direction = Direction.N;
+                this.nextDirection = Direction.N;
                 break;
             case W:
-                this.direction = Direction.S;
+                this.nextDirection = Direction.S;
                 break;
             case N:
-                this.direction = Direction.W;
+                this.nextDirection = Direction.W;
                 break;
             case S:
-                this.direction = Direction.E;
+                this.nextDirection = Direction.E;
                 break;
             default:
                 throw new IllegalStateException("Invalid Direction");
         }
+        this.nextPosition = this.position;
     }
 
-    private Position moveForward() {
+    private void positionForward() {
         switch (this.direction) {
             case E:
-                return new Position(this.position.getX() + 1, this.position.getY());
+                nextPosition = new Position(this.position.getX() + 1, this.position.getY());
+                break;
             case W:
-                return new Position(this.position.getX() - 1, this.position.getY());
+                nextPosition = new Position(this.position.getX() - 1, this.position.getY());
+                break;
             case N:
-                return new Position(this.position.getX(), this.position.getY() + 1);
+                nextPosition = new Position(this.position.getX(), this.position.getY() + 1);
+                break;
             case S:
-                return new Position(this.position.getX(), this.position.getY() - 1);
+                nextPosition = new Position(this.position.getX(), this.position.getY() - 1);
+                break;
             default:
                 throw new IllegalStateException("Invalid direction");
         }
+        nextDirection = direction;
     }
 
-    public boolean isAtSamePosition(Mower anotherMower) {
-        return this.position.getX().equals(anotherMower.position.getX()) && this.position.getY().equals(anotherMower.position.getY());
+    boolean isAtSamePosition(Position anotherPosition) {
+        return this.position.equals(anotherPosition);
     }
 
     @Override
@@ -122,11 +142,15 @@ public class Mower {
         return Objects.hash(id);
     }
 
+    Position getNextPosition() {
+        return nextPosition;
+    }
+
     public static class MowerBuilder {
 
         private Position initialPosition;
         private Direction initialDirection;
-        private Queue<Move> moves;
+        private Queue<MoveType> moveTypes;
 
         public MowerBuilder withPosition(Position position) {
             this.initialPosition = position;
@@ -138,14 +162,14 @@ public class Mower {
             return this;
         }
 
-        public MowerBuilder withMoves(Stream<Move> moveStream) {
-            moves = new ArrayDeque<>();
-            moveStream.forEach(moves::add);
+        public MowerBuilder withMoves(Stream<MoveType> moveStream) {
+            moveTypes = new ArrayDeque<>();
+            moveStream.forEach(moveTypes::add);
             return this;
         }
 
         public Mower build() {
-            return new Mower(initialPosition, initialDirection, moves);
+            return new Mower(initialPosition, initialDirection, moveTypes);
         }
 
     }

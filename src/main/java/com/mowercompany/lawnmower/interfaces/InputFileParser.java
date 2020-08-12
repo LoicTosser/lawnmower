@@ -2,7 +2,7 @@ package com.mowercompany.lawnmower.interfaces;
 
 import com.mowercompany.lawnmower.domain.Direction;
 import com.mowercompany.lawnmower.domain.Lawn;
-import com.mowercompany.lawnmower.domain.Move;
+import com.mowercompany.lawnmower.domain.MoveType;
 import com.mowercompany.lawnmower.domain.Mower;
 import com.mowercompany.lawnmower.domain.Position;
 
@@ -13,11 +13,13 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+import static com.mowercompany.lawnmower.application.MowTheLawn.MowTheLawnRequest;
+
 public class InputFileParser {
 
     private static final Pattern SEPARATOR_PATTERN = Pattern.compile(" ");
 
-    public static Lawn toLawn(File inputFile) {
+    public static MowTheLawnRequest toLawn(File inputFile) {
         if (inputFile == null) {
             throw new IllegalArgumentException("Input file can't be null");
         }
@@ -30,7 +32,7 @@ public class InputFileParser {
             while(scanner.hasNextLine()) {
                 mowers.add(mapToMower(scanner));
             }
-            return new Lawn(upperRightCornerPosition, mowers);
+            return new MowTheLawnRequest(new Lawn(upperRightCornerPosition), mowers);
         } catch (FileNotFoundException e) {
             throw new IllegalArgumentException("Input file " + inputFile + " does not exist");
         }
@@ -81,7 +83,7 @@ public class InputFileParser {
     }
 
     private static Mower.MowerBuilder parseMoves(Mower.MowerBuilder builder, String movesLine) {
-        return builder.withMoves(movesLine.chars().mapToObj(c -> Move.valueOf(String.valueOf((char) c))));
+        return builder.withMoves(movesLine.chars().mapToObj(c -> MoveType.valueOf(String.valueOf((char) c))));
     }
 
 }

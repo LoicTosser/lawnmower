@@ -1,15 +1,15 @@
 package com.mowercompany.lawnmower.interfaces;
 
+import com.mowercompany.lawnmower.application.MowTheLawn;
 import com.mowercompany.lawnmower.domain.Direction;
 import com.mowercompany.lawnmower.domain.Lawn;
-import com.mowercompany.lawnmower.domain.Move;
+import com.mowercompany.lawnmower.domain.MoveType;
 import com.mowercompany.lawnmower.domain.Mower;
 import com.mowercompany.lawnmower.domain.Position;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.stream.Stream;
 
 class InputFileParserTest implements WithAssertions {
@@ -95,24 +95,27 @@ class InputFileParserTest implements WithAssertions {
     void shouldThrowExceptionWhenInvalidEntryInMowerMoves() {
         assertThatThrownBy(() ->InputFileParser.toLawn(new File("src/test/resources/invalid-mower-moves.mow")))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("No enum constant com.mowercompany.lawnmower.domain.Move.X");
+                .hasMessage("No enum constant com.mowercompany.lawnmower.domain.MoveType.X");
     }
 
     @Test
     void shouldParseValidInputFile() {
-        Lawn lawn = InputFileParser.toLawn(new File("src/test/resources/simpleInput.mow"));
         Mower.MowerBuilder builder = new Mower.MowerBuilder();
         builder = builder.withDirection(Direction.N).withPosition(new Position(1,2));
-        builder.withMoves(Stream.of(Move.L, Move.F, Move.L, Move.F, Move.L,  Move.F, Move.L, Move.F, Move.F));
+        builder.withMoves(Stream.of(MoveType.L, MoveType.F, MoveType.L, MoveType.F, MoveType.L,  MoveType.F, MoveType.L, MoveType.F, MoveType.F));
         Mower expectedMower1 = builder.build();
 
         builder = new Mower.MowerBuilder();
         builder = builder.withDirection(Direction.E).withPosition(new Position(3,3));
-        builder.withMoves(Stream.of(Move.F, Move.F, Move.R, Move.F, Move.F,  Move.R, Move.F, Move.R, Move.R, Move.F));
+        builder.withMoves(Stream.of(MoveType.F, MoveType.F, MoveType.R, MoveType.F, MoveType.F,  MoveType.R, MoveType.F, MoveType.R, MoveType.R, MoveType.F));
         Mower expectedMower2 = builder.build();
-        Lawn expectedLawn = new Lawn(new Position(5, 5), Arrays.asList(expectedMower1, expectedMower2));
-        assertThat(lawn.getUpperRightCorner()).isEqualTo(expectedLawn.getUpperRightCorner());
-        assertThat(lawn.getMowers()).hasSize(2);
+        Lawn expectedLawn = new Lawn(new Position(5, 5));
+        MowTheLawn.MowTheLawnRequest mowTheLawnRequest = InputFileParser.toLawn(new File("src/test/resources/simpleInput.mow"));
+
+        assertThat(mowTheLawnRequest.getLawn()).isEqualTo(expectedLawn);
+        assertThat(mowTheLawnRequest.getMowers().size()).isEqualTo(2);
+        assertThat(mowTheLawnRequest.getMowers().get(0).toString()).isEqualTo(expectedMower1.toString());
+        assertThat(mowTheLawnRequest.getMowers().get(1).toString()).isEqualTo(expectedMower2.toString());
     }
 
 }

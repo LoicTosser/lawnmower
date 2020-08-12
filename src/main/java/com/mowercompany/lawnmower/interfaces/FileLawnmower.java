@@ -1,13 +1,12 @@
 package com.mowercompany.lawnmower.interfaces;
 
 import com.mowercompany.lawnmower.application.MowTheLawn;
-import com.mowercompany.lawnmower.domain.Lawn;
 import com.mowercompany.lawnmower.domain.Mower;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
+import java.util.stream.Stream;
 
 public class FileLawnmower {
 
@@ -20,13 +19,11 @@ public class FileLawnmower {
             throw new IllegalArgumentException("Input file invalid: " + inputFilePath);
         }
 
-        Lawn lawn = InputFileParser.toLawn(new File(inputFilePath));
+        MowTheLawn.MowTheLawnRequest mowTheLawnRequest = InputFileParser.toLawn(new File(inputFilePath));
 
-        List<Mower> mowers = mowTheLawn.execute(lawn);
+        Stream<Mower> mowers = mowTheLawn.execute(mowTheLawnRequest);
 
-        for (Mower mower : mowers) {
-            System.out.println(mower.toString());
-        }
+        mowers.forEach(mower -> System.out.println(mower.toString()));
     }
 
 }

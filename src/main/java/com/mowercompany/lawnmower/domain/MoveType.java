@@ -1,6 +1,6 @@
 package com.mowercompany.lawnmower.domain;
 
-public enum Move {
+public enum MoveType {
 
     L,R,F
 
