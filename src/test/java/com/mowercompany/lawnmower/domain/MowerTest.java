@@ -11,7 +11,7 @@ class MowerTest implements WithAssertions {
     @Test
     void shouldMoveForward() {
         Mower.MowerBuilder builder = new Mower.MowerBuilder();
-        Mower mower = builder.withPosition(new Position(1,2)).withDirection(Direction.E).withMoves(Stream.of(MoveType.F)).build();
+        Mower mower = builder.withCoordinates(new Coordinates(1,2)).withDirection(Direction.E).withMoves(Stream.of(MoveType.F)).build();
 
         assertThat(mower.hasNextMove()).isTrue();
         mower.prepareNextMove();
@@ -24,7 +24,7 @@ class MowerTest implements WithAssertions {
     @Test
     void shouldTurnLeft() {
         Mower.MowerBuilder builder = new Mower.MowerBuilder();
-        Mower mower = builder.withPosition(new Position(1,2)).withDirection(Direction.E).withMoves(Stream.of(MoveType.L)).build();
+        Mower mower = builder.withCoordinates(new Coordinates(1,2)).withDirection(Direction.E).withMoves(Stream.of(MoveType.L)).build();
 
         assertThat(mower.hasNextMove()).isTrue();
         mower.prepareNextMove();
@@ -37,7 +37,7 @@ class MowerTest implements WithAssertions {
     @Test
     void shouldTurnRight() {
         Mower.MowerBuilder builder = new Mower.MowerBuilder();
-        Mower mower = builder.withPosition(new Position(1,2)).withDirection(Direction.E).withMoves(Stream.of(MoveType.R)).build();
+        Mower mower = builder.withCoordinates(new Coordinates(1,2)).withDirection(Direction.E).withMoves(Stream.of(MoveType.R)).build();
 
         assertThat(mower.hasNextMove()).isTrue();
         mower.prepareNextMove();

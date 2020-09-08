@@ -1,10 +1,10 @@
 package com.mowercompany.lawnmower.interfaces;
 
+import com.mowercompany.lawnmower.domain.Coordinates;
 import com.mowercompany.lawnmower.domain.Direction;
 import com.mowercompany.lawnmower.domain.Lawn;
 import com.mowercompany.lawnmower.domain.MoveType;
 import com.mowercompany.lawnmower.domain.Mower;
-import com.mowercompany.lawnmower.domain.Position;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,6 +17,10 @@ import static com.mowercompany.lawnmower.application.MowTheLawn.MowTheLawnReques
 
 public class InputFileParser {
 
+    private InputFileParser() {
+
+    }
+
     private static final Pattern SEPARATOR_PATTERN = Pattern.compile(" ");
 
     public static MowTheLawnRequest toLawn(File inputFile) {
@@ -27,7 +31,7 @@ public class InputFileParser {
             if (!scanner.hasNextLine()) {
                 throw new IllegalArgumentException("Input file is empty");
             }
-            Position upperRightCornerPosition = mapToPosition(scanner.nextLine());
+            Coordinates upperRightCornerPosition = mapToCoordinates(scanner.nextLine());
             List<Mower> mowers = new ArrayList<>();
             while(scanner.hasNextLine()) {
                 mowers.add(mapToMower(scanner));
@@ -39,7 +43,7 @@ public class InputFileParser {
 
     }
 
-    private static Position mapToPosition(String positionLine) {
+    private static Coordinates mapToCoordinates(String positionLine) {
         if (positionLine == null || positionLine.isEmpty()) {
             throw new IllegalArgumentException("First line of input file must not be null or empty");
         }
@@ -48,7 +52,7 @@ public class InputFileParser {
             throw new IllegalArgumentException("First line is not valid: " + positionLine);
         }
         try {
-            return new Position(Integer.valueOf(lawnData[0]), Integer.valueOf(lawnData[1]));
+            return new Coordinates(Integer.valueOf(lawnData[0]), Integer.valueOf(lawnData[1]));
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Error while parsing lawn");
         }
@@ -73,7 +77,7 @@ public class InputFileParser {
             throw new IllegalArgumentException("Invalid line: " + positionLine + ". Line for mower position must contain 3 entries");
         }
         try {
-            builder = builder.withPosition(new Position(Integer.valueOf(initialPositionData[0]),
+            builder = builder.withCoordinates(new Coordinates(Integer.valueOf(initialPositionData[0]),
                                                         Integer.valueOf(initialPositionData[1])));
         } catch(NumberFormatException e) {
             throw new IllegalArgumentException("Error while parsing mower position", e);

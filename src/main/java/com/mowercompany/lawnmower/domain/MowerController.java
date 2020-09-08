@@ -36,7 +36,7 @@ public class MowerController {
 
     boolean canMowerMoveToNext(Mower mower) {
         Position nextPosition = mower.getNextPosition();
-        if (!lawn.isIn(nextPosition)) {
+        if (!lawn.isIn(nextPosition.getCoordinates())) {
             return false;
         }
 

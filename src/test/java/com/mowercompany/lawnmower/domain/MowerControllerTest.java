@@ -11,15 +11,15 @@ class MowerControllerTest implements WithAssertions {
     @Test
     void shouldMowTheLawn() {
         Mower.MowerBuilder builder = new Mower.MowerBuilder();
-        builder = builder.withDirection(Direction.N).withPosition(new Position(1,2));
+        builder = builder.withDirection(Direction.N).withCoordinates(new Coordinates(1,2));
         builder.withMoves(Stream.of(MoveType.L, MoveType.F, MoveType.L, MoveType.F, MoveType.L,  MoveType.F, MoveType.L, MoveType.F, MoveType.F));
         Mower mower1 = builder.build();
 
         builder = new Mower.MowerBuilder();
-        builder = builder.withDirection(Direction.E).withPosition(new Position(3,3));
+        builder = builder.withDirection(Direction.E).withCoordinates(new Coordinates(3,3));
         builder.withMoves(Stream.of(MoveType.F, MoveType.F, MoveType.R, MoveType.F, MoveType.F,  MoveType.R, MoveType.F, MoveType.R, MoveType.R, MoveType.F));
         Mower mower2 = builder.build();
-        Lawn lawn = new Lawn(new Position(5, 5));
+        Lawn lawn = new Lawn(new Coordinates(5, 5));
 
         MowerController mowerController = new MowerController(lawn, Arrays.asList(mower1, mower2));
         mowerController.mowLawn();

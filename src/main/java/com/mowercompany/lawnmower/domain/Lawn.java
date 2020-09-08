@@ -4,21 +4,21 @@ import java.util.Objects;
 
 public class Lawn {
 
-    private final Position upperRightCorner;
+    private final Coordinates upperRightCorner;
 
-    public Lawn(Position upperRightCorner) {
+    public Lawn(Coordinates upperRightCorner) {
         if (upperRightCorner == null) {
             throw new IllegalArgumentException("Upper right corner position can't be null");
         }
         this.upperRightCorner = upperRightCorner;
     }
 
-    boolean isIn(final Position position) {
-        if (position == null) {
+    boolean isIn(final Coordinates coordinates) {
+        if (coordinates == null) {
             throw new IllegalArgumentException("Position can't be null");
         }
-        return position.getX() >= 0 && position.getX() <= this.upperRightCorner.getX()
-                && position.getY() >= 0 && position.getY() <= this.upperRightCorner.getY();
+        return coordinates.getX() >= 0 && coordinates.getX() <= this.upperRightCorner.getX()
+                && coordinates.getY() >= 0 && coordinates.getY() <= this.upperRightCorner.getY();
     }
 
     @Override

@@ -14,37 +14,37 @@ class LawnTest implements WithAssertions {
 
     @Test
     void shouldBeIn() {
-        Lawn lawn = new Lawn(new Position(5,5));
-        assertThat(lawn.isIn(new Position(3,3))).isTrue();
+        Lawn lawn = new Lawn(new Coordinates(5,5));
+        assertThat(lawn.isIn(new Coordinates(3,3))).isTrue();
     }
 
     @Test
     void shouldBeInWhenYIsOutOfUpperBound() {
-        Lawn lawn = new Lawn(new Position(5,5));
-        assertThat(lawn.isIn(new Position(3,6))).isFalse();
+        Lawn lawn = new Lawn(new Coordinates(5,5));
+        assertThat(lawn.isIn(new Coordinates(3,6))).isFalse();
     }
 
     @Test
     void shouldBeInWhenXIsOutOfUpperBound() {
-        Lawn lawn = new Lawn(new Position(5,5));
-        assertThat(lawn.isIn(new Position(6,3))).isFalse();
+        Lawn lawn = new Lawn(new Coordinates(5,5));
+        assertThat(lawn.isIn(new Coordinates(6,3))).isFalse();
     }
 
     @Test
     void shouldBeInWhenYIsNegative() {
-        Lawn lawn = new Lawn(new Position(5,5));
-        assertThat(lawn.isIn(new Position(3,-1))).isFalse();
+        Lawn lawn = new Lawn(new Coordinates(5,5));
+        assertThat(lawn.isIn(new Coordinates(3,-1))).isFalse();
     }
 
     @Test
     void shouldBeInWhenXIsNegative() {
-        Lawn lawn = new Lawn(new Position(5,5));
-        assertThat(lawn.isIn(new Position(-1,3))).isFalse();
+        Lawn lawn = new Lawn(new Coordinates(5,5));
+        assertThat(lawn.isIn(new Coordinates(-1,3))).isFalse();
     }
 
     @Test
     void shouldThrowExceptionWithNullPosition() {
-        Lawn lawn = new Lawn(new Position(5,5));
+        Lawn lawn = new Lawn(new Coordinates(5,5));
         assertThatThrownBy(() -> lawn.isIn(null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Position can't be null");

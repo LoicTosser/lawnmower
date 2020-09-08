@@ -2,25 +2,50 @@ package com.mowercompany.lawnmower.domain;
 
 public enum Direction {
 
-    N(Direction.W,Direction.E),S(Direction.E, Direction.W),E(Direction.N, Direction.S),W(Direction.N, Direction.E);
+    N {
+        @Override
+        public Direction turnLeft() {
+            return W;
+        }
 
-    private final Direction left;
+        @Override
+        public Direction turnRight() {
+            return E;
+        }
+    },S {
+        @Override
+        public Direction turnLeft() {
+            return E;
+        }
 
-    private final Direction right;
+        @Override
+        public Direction turnRight() {
+            return W;
+        }
+    },E {
+        @Override
+        public Direction turnLeft() {
+            return N;
+        }
 
-    Direction(Direction left, Direction right) {
-        this.left = left;
-        this.right = right;
-    }
+        @Override
+        public Direction turnRight() {
+            return S;
+        }
+    },W {
+        @Override
+        public Direction turnLeft() {
+            return S;
+        }
 
-    public Direction turnLeft() {
-        return left;
-    }
+        @Override
+        public Direction turnRight() {
+            return N;
+        }
+    };
 
-    public Direction turnRight() {
-        return right;
-    }
+    public abstract Direction turnLeft();
 
-
+    public abstract Direction turnRight();
 
 }

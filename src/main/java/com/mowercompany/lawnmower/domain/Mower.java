@@ -11,18 +11,14 @@ public class Mower {
     private final String id = UUID.randomUUID().toString();
 
     private Position position;
-    private Direction direction;
 
     private Position nextPosition;
-    private Direction nextDirection;
 
     private final Queue<MoveType> moveTypes;
 
     private Mower(Position initialPosition,
-                  Direction initialDirection,
                   Queue<MoveType> moveTypes) {
         this.position = initialPosition;
-        this.direction = initialDirection;
         this.moveTypes = moveTypes;
     }
 
@@ -54,40 +50,20 @@ public class Mower {
     }
 
     void confirmMove() {
-        this.direction = nextDirection;
         this.position = nextPosition;
-        this.nextDirection = null;
         this.nextPosition = null;
     }
 
     private void turnRight() {
-        this.nextDirection = this.direction.turnRight();
-        this.nextPosition = this.position;
+        this.nextPosition = this.position.turnRight();
     }
 
     private void turnLeft() {
-        this.nextDirection = this.direction.turnLeft();
-        this.nextPosition = this.position;
+        this.nextPosition = this.position.turnLeft();
     }
 
     private void positionForward() {
-        switch (this.direction) {
-            case E:
-                nextPosition = new Position(this.position.getX() + 1, this.position.getY());
-                break;
-            case W:
-                nextPosition = new Position(this.position.getX() - 1, this.position.getY());
-                break;
-            case N:
-                nextPosition = new Position(this.position.getX(), this.position.getY() + 1);
-                break;
-            case S:
-                nextPosition = new Position(this.position.getX(), this.position.getY() - 1);
-                break;
-            default:
-                throw new IllegalStateException("Invalid direction");
-        }
-        this.nextDirection = direction;
+        this.nextPosition = this.position.moveForward();
     }
 
     boolean isAtSamePosition(Position anotherPosition) {
@@ -96,7 +72,7 @@ public class Mower {
 
     @Override
     public String toString() {
-        return position.getX() + " " + position.getY() + " " + direction;
+        return this.position.toString();
     }
 
     @Override
@@ -118,17 +94,17 @@ public class Mower {
 
     public static class MowerBuilder {
 
-        private Position initialPosition;
-        private Direction initialDirection;
+        private Direction direction;
+        private Coordinates coordinates;
         private Queue<MoveType> moveTypes;
 
-        public MowerBuilder withPosition(Position position) {
-            this.initialPosition = position;
+        public MowerBuilder withDirection(Direction direction) {
+            this.direction = direction;
             return this;
         }
 
-        public MowerBuilder withDirection(Direction direction) {
-            this.initialDirection = direction;
+        public MowerBuilder withCoordinates(Coordinates coordinates) {
+            this.coordinates = coordinates;
             return this;
         }
 
@@ -139,7 +115,7 @@ public class Mower {
         }
 
         public Mower build() {
-            return new Mower(initialPosition, initialDirection, moveTypes);
+            return new Mower(new Position(this.coordinates, this.direction), moveTypes);
         }
 
     }

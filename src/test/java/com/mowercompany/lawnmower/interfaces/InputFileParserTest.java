@@ -1,11 +1,11 @@
 package com.mowercompany.lawnmower.interfaces;
 
 import com.mowercompany.lawnmower.application.MowTheLawn;
+import com.mowercompany.lawnmower.domain.Coordinates;
 import com.mowercompany.lawnmower.domain.Direction;
 import com.mowercompany.lawnmower.domain.Lawn;
 import com.mowercompany.lawnmower.domain.MoveType;
 import com.mowercompany.lawnmower.domain.Mower;
-import com.mowercompany.lawnmower.domain.Position;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.Test;
 
@@ -101,15 +101,15 @@ class InputFileParserTest implements WithAssertions {
     @Test
     void shouldParseValidInputFile() {
         Mower.MowerBuilder builder = new Mower.MowerBuilder();
-        builder = builder.withDirection(Direction.N).withPosition(new Position(1,2));
+        builder = builder.withDirection(Direction.N).withCoordinates(new Coordinates(1,2));
         builder.withMoves(Stream.of(MoveType.L, MoveType.F, MoveType.L, MoveType.F, MoveType.L,  MoveType.F, MoveType.L, MoveType.F, MoveType.F));
         Mower expectedMower1 = builder.build();
 
         builder = new Mower.MowerBuilder();
-        builder = builder.withDirection(Direction.E).withPosition(new Position(3,3));
+        builder = builder.withDirection(Direction.E).withCoordinates(new Coordinates(3,3));
         builder.withMoves(Stream.of(MoveType.F, MoveType.F, MoveType.R, MoveType.F, MoveType.F,  MoveType.R, MoveType.F, MoveType.R, MoveType.R, MoveType.F));
         Mower expectedMower2 = builder.build();
-        Lawn expectedLawn = new Lawn(new Position(5, 5));
+        Lawn expectedLawn = new Lawn(new Coordinates(5, 5));
         MowTheLawn.MowTheLawnRequest mowTheLawnRequest = InputFileParser.toLawn(new File("src/test/resources/simpleInput.mow"));
 
         assertThat(mowTheLawnRequest.getLawn()).isEqualTo(expectedLawn);
