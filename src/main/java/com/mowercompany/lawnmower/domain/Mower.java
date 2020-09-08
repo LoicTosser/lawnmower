@@ -61,42 +61,12 @@ public class Mower {
     }
 
     private void turnRight() {
-        switch (this.direction) {
-            case E:
-                this.nextDirection = Direction.S;
-                break;
-            case W:
-                this.nextDirection = Direction.N;
-                break;
-            case N:
-                this.nextDirection = Direction.E;
-                break;
-            case S:
-                this.nextDirection = Direction.W;
-                break;
-            default:
-                throw new IllegalStateException("Invalid Direction");
-        }
+        this.nextDirection = this.direction.turnRight();
         this.nextPosition = this.position;
     }
 
     private void turnLeft() {
-        switch (this.direction) {
-            case E:
-                this.nextDirection = Direction.N;
-                break;
-            case W:
-                this.nextDirection = Direction.S;
-                break;
-            case N:
-                this.nextDirection = Direction.W;
-                break;
-            case S:
-                this.nextDirection = Direction.E;
-                break;
-            default:
-                throw new IllegalStateException("Invalid Direction");
-        }
+        this.nextDirection = this.direction.turnLeft();
         this.nextPosition = this.position;
     }
 
@@ -117,7 +87,7 @@ public class Mower {
             default:
                 throw new IllegalStateException("Invalid direction");
         }
-        nextDirection = direction;
+        this.nextDirection = direction;
     }
 
     boolean isAtSamePosition(Position anotherPosition) {
